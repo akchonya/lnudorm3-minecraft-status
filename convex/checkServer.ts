@@ -39,6 +39,17 @@ export const checkServer = internalAction({
           body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
         });
       }
+
+      // Update chat title based on server status
+      const chatTitle = online
+        ? "🟢 lnudorm3 minecraft йоу"
+        : "🔴 lnudorm3 minecraft йоу";
+
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setChatTitle`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, title: chatTitle }),
+      });
   
       console.log(`Server status: ${online ? "online" : "offline"}`);
     },
