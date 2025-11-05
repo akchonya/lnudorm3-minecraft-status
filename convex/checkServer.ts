@@ -13,12 +13,29 @@ export const checkServer = internalAction({
     handler: async (ctx) => {
       const latest = await ctx.runQuery(api.status.getLatest);
   
+      // Retry logic: try up to 3 times before marking as offline
       let online = false;
-      try {
-        const res = await mcStatus(SERVER_HOST, SERVER_PORT, { timeout: 2000 });
-        online = !!res.version?.name;
-      } catch {
-        online = false;
+      const maxRetries = 3;
+      const retryDelay = 3000; // 3 seconds between retries
+      
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const res = await mcStatus(SERVER_HOST, SERVER_PORT, { timeout: 3000 });
+          online = !!res.version?.name;
+          if (online) {
+            break; // Success, no need to retry
+          }
+        } catch (error) {
+          // If this is the last attempt, mark as offline
+          if (attempt === maxRetries) {
+            online = false;
+            console.log(`Server check failed after ${maxRetries} attempts:`, error);
+          } else {
+            // Wait before retrying
+            await new Promise(resolve => setTimeout(resolve, retryDelay));
+            console.log(`Server check attempt ${attempt} failed, retrying...`);
+          }
+        }
       }
   
       const previous = latest?.online ?? null;
