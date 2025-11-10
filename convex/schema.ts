@@ -5,6 +5,6 @@ export default defineSchema({
   status: defineTable({
     online: v.boolean(),
     lastChecked: v.number(),
-  }),
+  }).index("by_lastChecked", ["lastChecked"]),
 });
 

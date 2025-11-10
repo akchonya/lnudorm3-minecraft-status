@@ -45,17 +45,17 @@ export const checkServer = internalAction({
         lastChecked: Date.now(),
       });
   
-      if (previous !== null && previous !== online) {
-        const text = online
-          ? "✅ сервер онлайн!"
-          : "⚠️ сервер офлайн((";
+      // if (previous !== null && previous !== online) {
+      //   const text = online
+      //     ? "✅ сервер онлайн!"
+      //     : "⚠️ сервер офлайн((";
   
-        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
-        });
-      }
+      //   await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
+      //   });
+      // }
 
       // Update chat title based on server status
       const chatTitle = online
