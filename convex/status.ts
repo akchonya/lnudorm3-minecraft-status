@@ -13,9 +13,11 @@ export const insert = mutation({
   args: {
     online: v.boolean(),
     lastChecked: v.number(),
+    players: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
-    await ctx.db.insert("status", args);
+    const { players = [], ...rest } = args;
+    await ctx.db.insert("status", { ...rest, players });
   },
 });
 
