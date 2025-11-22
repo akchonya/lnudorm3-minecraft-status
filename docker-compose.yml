@@ -1,0 +1,19 @@
+services:
+  server-checker:
+    build: .
+    container_name: lnudorm3-status-checker
+    restart: unless-stopped
+    environment:
+      - SERVER_HOST=${SERVER_HOST}
+      - SERVER_PORT=${SERVER_PORT:-25565}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+    volumes:
+      - ./data:/data
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
+
