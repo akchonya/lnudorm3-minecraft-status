@@ -2,7 +2,7 @@ services:
   server-checker:
     build: .
     container_name: lnudorm3-status-checker
-    restart: unless-stopped
+    restart: always
     environment:
       - SERVER_HOST=${SERVER_HOST}
       - SERVER_PORT=${SERVER_PORT:-25565}
